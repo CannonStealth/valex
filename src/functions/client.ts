@@ -1,7 +1,7 @@
 import * as Discord from 'discord.js'
 const client = new Discord.Client()
 import { config as dotenv } from 'dotenv'
-dotenv({ path: 'src/objects/.env' })
+dotenv()
 
 const login = async(bot: string = 'valex') => {
     let key: string | undefined;
