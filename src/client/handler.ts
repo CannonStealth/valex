@@ -3,7 +3,7 @@ import { defaultPrefix, betaPrefix } from "../objects/config.json"
 
 export = (client: Client) => {
 
-let prefix: string = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
+let prefix: string | undefined = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
 
 client.commands = new Collection();
 client.aliases = new Collection();
