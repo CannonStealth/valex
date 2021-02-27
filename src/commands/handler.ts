@@ -43,7 +43,7 @@ const validatePermissions = (permissions: string[]) => {
   };
 };
 
-const handler = (client: Discord.Client, commandOptions: any) => {
+const handler = (client: Discord.Client, commandOptions: Record<string, any>) => {
   let {
     commands,
     expectedArgs = '',
@@ -70,58 +70,11 @@ const handler = (client: Discord.Client, commandOptions: any) => {
     validatePermissions(permissions);
   }
 
-  client.on('message', (message: Discord.Message) => {
-    const { member, content, guild } = message;
+  client.commands.set(commands[0], commandOptions)
 
-    for (const alias of commands) {
-      const command = `${prefix}${alias.toLowerCase()}`;
+  for (const command of commands) {
+    client.aliases.set(commands[0], command)
+  }
 
-      if (
-        content.toLowerCase().startsWith(`${command} `) ||
-        content.toLowerCase() === command
-      ) {
-
-        for (const permission of permissions) {
-          if (member!.hasPermission(permission)) {
-            message.channel.send(permissionError);
-            return;
-          };
-        };
-
-        for (const requiredRole of requiredRoles) {
-          const role = guild?.roles.cache.find(
-            (role: Discord.Role) => role.name === requiredRole
-          );
-
-          if (!role || !member?.roles.cache.has(role.id)) {
-            message.channel.send(
-              `You must have the "${requiredRole}" role to use this command.`
-            );
-            return;
-          };
-        };
-
-        const args: string[] = content.split(/[ ]+/);
-
-        args.shift();
-
-        // Ensure we have the correct number of arguments
-        if (
-          args.length < minArgs ||
-          (maxArgs !== null && args.length > maxArgs)
-        ) {
-          message.channel.send(
-            `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
-          );
-          return;
-        };
-
-        // Handle the custom command code
-        callback(message, args, args.join(' ')!, client);
-
-        return;
-      };
-    };
-  });
 };
 export default handler
