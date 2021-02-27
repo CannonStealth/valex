@@ -1,30 +1,22 @@
-import * as Discord from "discord.js";
-import { Collection } from "discord.js";
-const client = new Discord.Client();
-import { config as dotenv } from "dotenv";
-dotenv();
+import { Collection, Message, Role, Client } from "discord.js"
+import { defaultPrefix, betaPrefix } from "../objects/config.json"
 
-import { defaultPrefix as prefix } from "../objects/config.json";
+export = (client: Client) => {
 
-const login = async (bot: string = "valex") => {
-
-  let key: string | undefined =
-    bot === "valex" ? process.env.VALEX : process.env.BETA;
-
-  return await client.login(key);
-};
+let prefix: string = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
 
 client.commands = new Collection();
 client.aliases = new Collection();
 
-client.on("message", async (message) => {
+
+client.on("message", async (message: Message) => {
   const { member, content, guild } = message;
 
   if (guild == null || member == null) return;
 
-  if (!message.content.startsWith(prefix)) return;
+  if (!message.content.startsWith(prefix!)) return;
 
-  const args = message.content.slice(prefix.length).trim().split(/ +/g)
+  const args = message.content.slice(prefix!.length).trim().split(/ +/g)
 
   const commandName = args.shift()!;
 
@@ -49,7 +41,7 @@ client.on("message", async (message) => {
 
     for (const requiredRole of requiredRoles) {
       const role = guild?.roles.cache.find(
-        (role: Discord.Role) => role.name === requiredRole
+        (role: Role) => role.name === requiredRole
       );
 
       if (!role || !member?.roles.cache.has(role.id)) {
@@ -78,6 +70,4 @@ client.on("message", async (message) => {
     return;
   }
 });
-
-export default client;
-export { login as logger };
+}

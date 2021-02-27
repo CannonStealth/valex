@@ -1,5 +1,4 @@
 import * as Discord from 'discord.js';
-import { defaultPrefix as prefix } from '../objects/config.json'
 
 const validatePermissions = (permissions: string[]) => {
   const validPermissions: string[] = [

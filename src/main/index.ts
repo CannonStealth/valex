@@ -1,10 +1,13 @@
-import client, { logger as login } from '../functions/client'
-import loadHandler from '../commands/load'
+import client, { logger as login } from '../client/client'
+import loadCommands from '../commands/load'
+import loadHandler from "../client/handler"
 
 client.on('ready', () => { 
-    console.log('Active as ' + client.user!.tag) 
+
+console.log('Active as ' + client.user!.tag)
 
 loadHandler(client)
+loadCommands(client)
 
 })
 
