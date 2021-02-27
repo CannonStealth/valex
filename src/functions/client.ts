@@ -7,6 +7,7 @@ dotenv();
 import { defaultPrefix as prefix } from "../objects/config.json";
 
 const login = async (bot: string = "valex") => {
+
   let key: string | undefined =
     bot === "valex" ? process.env.VALEX : process.env.BETA;
 
