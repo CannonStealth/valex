@@ -13,6 +13,9 @@ client.aliases = new Collection();
 
 
 client.on("message", async (message: Message) => {
+
+  if(message.author.bot) return
+  
   const { member, content, guild } = message;
 
   if (guild == null || member == null) return;
