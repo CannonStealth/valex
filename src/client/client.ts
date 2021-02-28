@@ -15,7 +15,7 @@ const client = new Discord.Client();
 const login = async (bot: string = "valex") => {
 
   let key: string | undefined =
-    bot === "valex" ? process.env.VALEX : process.env.BETA;
+    bot.toLowerCase() === "valex" ? process.env.VALEX : process.env.BETA;
 
     return await client.login(key);
 };

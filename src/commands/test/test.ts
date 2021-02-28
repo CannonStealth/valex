@@ -1,5 +1,6 @@
 import { Message, Client } from "discord.js"
 
+
 export = {
     note: 'Faça uma pergunta com no mínimo 2 palavras',
     commands: ['test'],
@@ -9,5 +10,5 @@ export = {
     devOnlyMessage: 'You can\'t pls stop!',
     callback: (msg: Message, args: string[], text: string, client: Client) => { 
 
-        msg.channel.send('Hii')
+        msg.channel.send('Typescript')
     }}
