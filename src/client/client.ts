@@ -6,6 +6,7 @@ declare module 'discord.js' {
   interface Client {
       commands: Collection<string, Record<string, any>>;
       aliases: Collection<string, string>;
+      dev: Collection<string[], string[]>;
   }
 }
 
