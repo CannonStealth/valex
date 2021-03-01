@@ -103,7 +103,8 @@ client.on("message", async (message: Message) => {
     }
 
     if(cooldown) {
-      let cd = '( ' + cooldown.replace('m', ' * 60 + ').replace('h', ' * 60 * 60 + ').replace('d', ' * 24 * 60 * 60 + ').replace('s',' + 0 + ') + '0 ) * 1000'
+
+      let cd = '( ' + cooldown.toString().replace('m', ' * 60 + ').replace('h', ' * 60 * 60 + ').replace('d', ' * 24 * 60 * 60 + ').replace('s',' + 0 + ') + '0 ) * 1000'
 
       cd = evaluate(cd)
 
@@ -121,8 +122,12 @@ client.on("message", async (message: Message) => {
         let remaining = ms(timeLeftArray, 'short')
 
         cooldownEmbed.setDescription(`Wait ${remaining} more to use ${cmd.name} again`)
+
+        try {
         
-        return message.channel.send(cooldownMessage)
+        return message.channel.send(cooldownMessage.replace(' {TIME}', remaining).replace('{COMMAND}', cmd.name))
+
+        } catch (err) { return message.channel.send(cooldownMessage) }
       }
     }
 

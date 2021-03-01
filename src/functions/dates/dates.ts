@@ -92,8 +92,7 @@ const ms = (array: number[], format: string = 'short') => {
 }
 
 
-let a = convert(new Date(), 3, 'Thu Feb 11 2021 09:41:29 GMT+0000 (Coordinated Universal Time)', '-')
-console.log(ms(a, 'short'))
+
 
 //console.log(convert(new Date(), 3, 'Thu Feb 11 2021 09:41:29 GMT+0000 (Coordinated Universal Time)', '-'))        
 
