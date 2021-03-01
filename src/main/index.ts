@@ -5,10 +5,15 @@ import { MessageEmbed } from "discord.js"
 import moment from "moment"
 import { emoji } from "../objects/emojis.json"
 import { ColorResolvable } from 'discord.js'
+import mongo from '../functions/db/mongo'
 
 client.on('ready', async () => { 
 
 console.log('Active as ' + client.user!.tag)
+
+await mongo().then(async (mongoose) => {
+    console.log(`Connected to MongoDB`)
+    })
 
 loadHandler(client)
 loadCommands(client)

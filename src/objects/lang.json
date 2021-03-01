@@ -1,0 +1,9 @@
+{
+    "languages": ["english", "portugues"],
+    "translations": {
+      "LANGUAGE_SET": {
+        "portugues": "Idioma trocado para {LANG}",
+        "english": "Language set to {LANG}"
+      }
+    }
+  }
