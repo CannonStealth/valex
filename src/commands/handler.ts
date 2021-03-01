@@ -44,22 +44,18 @@ const validatePermissions = (permissions: string[]) => {
 
 const handler = (client: Discord.Client, commandOptions: Record<string, any>) => {
   let {
-    commands,
-    expectedArgs = '',
-    permissionError = 'You do not have permission to run this command.',
-    minArgs = 0,
-    maxArgs = null,
+    aliases = [],
+    name,
+    cooldown = 2,
     permissions = [],
-    requiredRoles = [],
-    callback,
   } = commandOptions;
 
   // Ensure the command and aliases are in an array
-  if (typeof commands === 'string') {
-    commands = [commands]
+  if (typeof aliases === 'string') {
+    aliases = []
   };
 
-  console.log(`Registering command "${commands[0]}"`);
+  console.log(`Registering command "${name}"`);
 
   if (permissions.length) {
     if (typeof permissions === 'string') {
@@ -69,10 +65,11 @@ const handler = (client: Discord.Client, commandOptions: Record<string, any>) =>
     validatePermissions(permissions);
   }
 
-  client.commands.set(commands[0], commandOptions)
+  client.commands.set(name, commandOptions)
 
-  for (const command of commands) {
-    client.aliases.set(commands[0], command)
+
+  for (const command of aliases) {
+    client.aliases.set(command, name)
   }
 
 };
