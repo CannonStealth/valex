@@ -1,14 +1,13 @@
 import { Message, Client } from "discord.js"
 
 
-export = {
+export default {
     name: 'test',
-    aliases: ['ca', 'i'],
     devOnly: true,
     minArgs: 2,
     cooldown: '2s 3m',
     devOnlyMessage: 'nonono',
-    callback: (msg: Message, args: string[], text: string, client: Client) => { 
+    callback: (msg: Message, args: string[], lang: string, client: Client) => { 
 
-        msg.channel.send('Typescript')
+        msg.channel.send('SHATAP CURSORS')
     }}

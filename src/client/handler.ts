@@ -2,6 +2,7 @@ import { Collection, Message, Role, Client, MessageEmbed } from "discord.js"
 import { defaultPrefix, betaPrefix } from "../objects/config.json"
 import ms, { convert as convertor } from "../functions/dates/dates"
 import format from "../functions/math/format"
+import language from '../functions/languages'
 const cooldownMap = new Map()
 
 const devOnlyEmbed = new MessageEmbed()
@@ -43,6 +44,7 @@ client.on("message", async (message: Message) => {
 
   const { 
    devOnly = false,
+   description = language(message.guild, 'NO_DESCRIPTION'), // :) yey no errors
    devOnlyMessage = devOnlyEmbed, 
    cooldown = '2s',
    cooldownMessage = cooldownEmbed,
@@ -130,7 +132,7 @@ client.on("message", async (message: Message) => {
       }
     }
 
-    callback(message, args, args.join(" ")!, client);
+    callback(message, args, language, client);
 
     return;
   }

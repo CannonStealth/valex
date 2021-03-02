@@ -1,9 +1,10 @@
 import { Message, Client, MessageEmbed } from "discord.js"
 
-export = {
+export default {
     name: 'help',
+    description: 'Show all commands or a specific command information',
     minArgs: 0,
-    callback: async(msg: Message, args: string[], text: any, client: Client) => { 
+    callback: async(msg: Message, args: string[], lang: any, client: Client) => { 
  
         if(args[0]) getInfo(args[0].toLowerCase())
         else help()

@@ -4,6 +4,11 @@
       "LANGUAGE_SET": {
         "portugues": "Idioma trocado para {LANG}",
         "english": "Language set to {LANG}"
+      },
+      "NO_DESCRIPTION": {
+        "portugues": "Este comando não tem nenhuma descrição",
+        "english": "This command doesn't have any description"
       }
-    }
+      
   }
+}

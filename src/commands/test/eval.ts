@@ -6,12 +6,16 @@ import resume from "../../functions/resume" /* Credits for Clefory */
 const devOnlyEmbed = new MessageEmbed()
 .setTitle('\\❌ | This command is too dangerous to use!')
 .setColor('RED')
-export = {
+
+export default {
     name: 'eval',
+    description: 'testing',
     devOnly: true,
     devOnlyMessage: devOnlyEmbed,
     minArgs: 1,
-    callback: async(msg: Message, args: string[], text: any, client: Client) => { 
+    callback: async(msg: Message, args: string[], lang: any, client: Client) => { 
+
+        let text = args.join(' ')
 
         const { Message, Client, MessageEmbed } = require("discord.js")
 

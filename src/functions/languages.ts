@@ -29,7 +29,7 @@ const setLanguage = (guild: any, language: any) => {
     throw new Error(`Unknown text ID "${textId}"`)
   }
 
-  const selectedLanguage = guildLanguages[guild.id].toLowerCase()
+  const selectedLanguage = guildLanguages[guild.id] ? guildLanguages[guild.id].toLowerCase() : 'english'
 // @ts-ignore 
   return lang.translations[textId][selectedLanguage]
 }

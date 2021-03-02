@@ -2,7 +2,7 @@ import languageSchema from '../../schemas/guild-schema'
 import { languages } from '../../objects/lang.json'
 import language, { setLanguage } from '../../functions/languages'
 
-module.exports = {
+export default {
   name: 'language',
   aliases: 'lang',
   callback: async (message: any, args: any) => {
