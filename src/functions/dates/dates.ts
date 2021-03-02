@@ -1,4 +1,5 @@
 import { long, short } from "./types"
+import { evaluate } from "mathjs";
 
 const convert = (date1: any, decimals: number = 0, date2: any = null, action: string = '-'): any => {
 
@@ -43,28 +44,11 @@ const convert = (date1: any, decimals: number = 0, date2: any = null, action: st
         let first: any = date1
         let second: any = date2
 
-        switch (action) {
-            case '+':
-                number = first + second
-                break;
+        let arr = ['-', '+', '*', '/']
 
-                case '-':
-                    number = first - second
-                    break;
+        if (!arr.includes(action)) return console.warn('Invalid action, you used ' +  action + '. The valid actions are ' + arr.join(', '))
 
-                    case '*':
-                        number = first * second
-                        break;
-
-                        case '/':
-                            number = first / second
-                            break;
-
-                            default: 
-                            number = first - second 
-                            break;
-
-        }
+        number = evaluate(first.toString() + action + second.toString())
 
         totalSeconds = (number / 1000);
         days = Math.floor(totalSeconds / 86400).toFixed() || 0

@@ -1,7 +1,7 @@
 import { Collection, Message, Role, Client, MessageEmbed } from "discord.js"
 import { defaultPrefix, betaPrefix } from "../objects/config.json"
-import { evaluate } from "mathjs";
 import ms, { convert as convertor } from "../functions/dates/dates"
+import format from "../functions/math/format"
 const cooldownMap = new Map()
 
 const devOnlyEmbed = new MessageEmbed()
@@ -48,8 +48,10 @@ client.on("message", async (message: Message) => {
    cooldownMessage = cooldownEmbed,
    channelPermissions = [], 
    channelPermissionError = 'You don\'t have that persmission!', 
-   permissions = [], permissionError = 'Perm error', 
-   requiredRoles = [], minArgs, 
+   permissions = [], 
+   permissionError = 'Perm error', 
+   requiredRoles = [], 
+   minArgs, 
    maxArgs = null, 
    expectedArgs = '', 
    callback
@@ -104,9 +106,7 @@ client.on("message", async (message: Message) => {
 
     if(cooldown) {
 
-      let cd = '( ' + cooldown.toString().replace('m', ' * 60 + ').replace('h', ' * 60 * 60 + ').replace('d', ' * 24 * 60 * 60 + ').replace('s',' + 0 + ') + '0 ) * 1000'
-
-      cd = evaluate(cd)
+      let cd = format(cooldown.toString())
 
       let isCooldown = cooldownMap.get(message.author.id + cmd.name) || false
 
@@ -114,7 +114,6 @@ client.on("message", async (message: Message) => {
 
       let after = cd + Date.now()
       cooldownMap.set(message.author.id + cmd.name, after)
-      console.log(cooldownMap)
 
       } else {
 

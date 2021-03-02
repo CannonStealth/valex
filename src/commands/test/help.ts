@@ -5,7 +5,7 @@ export = {
     minArgs: 0,
     callback: async(msg: Message, args: string[], text: any, client: Client) => { 
  
-        if(args[0]) getInfo(args[0])
+        if(args[0]) getInfo(args[0].toLowerCase())
         else help()
 
     function getInfo(command: string) { 
