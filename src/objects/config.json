@@ -1,5 +1,7 @@
 {
     "defaultPrefix": ">>",
     "betaPrefix": "<<",
-    "Owners": ["811657485462274129", "801845077303361606"]
+    "Owners": ["811657485462274129", "801845077303361606"],
+    "invite": "https://discord.com/oauth2/authorize?client_id={INVITE}&scope=bot&permissions=2147483647",
+    "server": "https://google.com"
 }

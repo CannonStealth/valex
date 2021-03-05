@@ -6,6 +6,9 @@ declare module 'discord.js' {
   interface Client {
       commands: Collection<string, Record<string, any>>;
       aliases: Collection<string, string>;
+      prefixes: Collection<string, string>;
+      categories: Collection<string, any>;
+      disabled: Collection<string, any>;
   }
 }
 

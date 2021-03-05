@@ -5,6 +5,8 @@ import mongoose from 'mongoose'
 
 const guildLanguages: object | number | symbol | string | any = {}
 
+
+
 const loadLanguages = async (client: Client) => {
   
       for (const guild of client.guilds.cache) {

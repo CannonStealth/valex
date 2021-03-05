@@ -15,6 +15,8 @@ await mongo().then(async (mongoose) => {
     console.log(`Connected to MongoDB`)
     })
 
+    console.log('LOAD BITCH LOAAAAAAAAAAAAAAAAD')
+
 loadHandler(client)
 loadCommands(client)
 

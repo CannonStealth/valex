@@ -3,8 +3,13 @@ import { languages } from '../../objects/lang.json'
 import language, { setLanguage } from '../../functions/languages'
 
 export default {
+  usage: '<português / english>',
+  example: 'português',
   name: 'language',
-  aliases: 'lang',
+  aliases: ['lang'],
+  locked: true,
+  category: 'Settings',
+  permissions: ['ADMINISTRATOR'],
   callback: async (message: any, args: any) => {
 
     try {

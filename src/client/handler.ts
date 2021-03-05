@@ -3,7 +3,12 @@ import { defaultPrefix, betaPrefix } from "../objects/config.json"
 import ms, { convert as convertor } from "../functions/dates/dates"
 import format from "../functions/math/format"
 import language from '../functions/languages'
+
 const cooldownMap = new Map()
+
+const blockedEmbed = new MessageEmbed()
+.setTitle('\\🔒 Command Locked')
+.setColor('YELLOW')
 
 const devOnlyEmbed = new MessageEmbed()
 .setTitle('\\❌ This command can only be used by bot owner!')
@@ -15,10 +20,14 @@ const cooldownEmbed = new MessageEmbed()
 
 export = (client: Client) => {
 
-let prefix: string | undefined = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
-
 client.commands = new Collection();
 client.aliases = new Collection();
+client.prefixes = new Collection();
+client.categories = new Collection();
+client.disabled = new Collection();
+
+let prefix: any = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
+
 
 client.on("message", async (message: Message) => {
 
@@ -28,6 +37,8 @@ client.on("message", async (message: Message) => {
   const { member, content, guild } = message;
 
   if (guild == null || member == null) return;
+
+  prefix = client.prefixes.get(message.guild!.id) ?? prefix ?? null 
 
   if (!message.content.startsWith(prefix!)) return;
 
@@ -39,23 +50,32 @@ client.on("message", async (message: Message) => {
 
   const cmd = client.commands.get(commandName) ?? client.commands.get(client.aliases.get(commandName)!) ?? null
 
+  prefix = client.prefixes.get(message.guild!.id) ?? null
+
+  if(prefix == null) prefix = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
 
   if (cmd == null) return;
 
   const { 
    devOnly = false,
-   description = language(message.guild, 'NO_DESCRIPTION'), // :) yey no errors
+   description = language(message.guild, 'NO_DESCRIPTION'),
    devOnlyMessage = devOnlyEmbed, 
+   hidden = false,
+   hidden2 = false,
+   locked = false,
    cooldown = '2s',
    cooldownMessage = cooldownEmbed,
    channelPermissions = [], 
    channelPermissionError = 'You don\'t have that persmission!', 
    permissions = [], 
-   permissionError = 'Perm error', 
+   permissionError = 'You don\'t have that persmission!', 
    requiredRoles = [], 
    minArgs, 
    maxArgs = null, 
    expectedArgs = '', 
+   category = 'Misc',
+   usage = ' ',
+   example = ' ',
    callback
   } = cmd
 
@@ -67,8 +87,13 @@ client.on("message", async (message: Message) => {
     if(devOnly) {
       if(!client.guilds.cache.get('814832821125775420')?.members.cache.get(message.author.id)?.roles.cache.has('815304261902532668')) return message.channel.send(devOnlyMessage).catch(() => { return })
     } 
+
+    if(locked) {
+      blockedEmbed.setDescription(`I'm sorry but ${cmd.name} is blocked at the moment`)
+      return message.channel.send(blockedEmbed)
+    }
     for (const permission of permissions) {
-      if (member!.hasPermission(permission)) {
+      if (!member!.hasPermission(permission)) {
         message.channel.send(permissionError);
         return;
       }
@@ -130,6 +155,8 @@ client.on("message", async (message: Message) => {
 
         } catch (err) { return message.channel.send(cooldownMessage) }
       }
+    } else {
+
     }
 
     callback(message, args, language, client);

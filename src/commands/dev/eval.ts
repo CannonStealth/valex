@@ -11,8 +11,11 @@ export default {
     name: 'eval',
     description: 'testing',
     devOnly: true,
-    devOnlyMessage: devOnlyEmbed,
+    devOnlyMessage: '',
+    hidden: true,
     minArgs: 1,
+    category: 'Owner Only',
+    locked: true,
     callback: async(msg: Message, args: string[], lang: any, client: Client) => { 
 
         let text = args.join(' ')
@@ -34,7 +37,7 @@ export default {
 
         try {
 
-        let badWords = ['destroy', '.token', '.token', '.valex', '.beta', '.env', 'process.exit', 'for', 'while', 'atob', 'ZGVzdHJveQ==']
+        let badWords = ['destroy', '.token', '.token', '.valex', '.beta', '.env', 'process.exit', 'for', 'while', 'atob', 'ZGVzdHJveQ==', 'rm', '-rf', 'root']
         if (badWords.some((word) => text.toLowerCase().includes(word.toLowerCase()))) {
 
             let NoEmbed = new MessageEmbed()

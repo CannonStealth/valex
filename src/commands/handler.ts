@@ -1,6 +1,7 @@
 import * as Discord from 'discord.js';
+import schema from "../schemas/guild-schema"
 
-const validatePermissions = (permissions: string[]) => {
+const validatePermissions = async (permissions: string[]) => {
   const validPermissions: string[] = [
     'CREATE_INSTANT_INVITE',
     'KICK_MEMBERS',
@@ -42,15 +43,17 @@ const validatePermissions = (permissions: string[]) => {
   };
 };
 
-const handler = (client: Discord.Client, commandOptions: Record<string, any>) => {
+const handler = async (client: Discord.Client, commandOptions: Record<string, any>) => {
   let {
     aliases = [],
     name,
-    cooldown = 2,
     permissions = [],
+    category = 'Misc',
   } = commandOptions;
 
-  // Ensure the command and aliases are in an array
+  // let's leave this empty
+
+  
   if (typeof aliases === 'string') {
     aliases = []
   };
@@ -69,8 +72,35 @@ const handler = (client: Discord.Client, commandOptions: Record<string, any>) =>
 
 
   for (const command of aliases) {
-    client.aliases.set(command, name)
+    client.aliases.set(command, name) 
   }
 
+  if(category) {
+    let categoryGetter = client.categories.get(category.toLowerCase())
+    if(!categoryGetter) categoryGetter = [category]
+    categoryGetter.push(name)
+
+    client.categories.set(category.toLowerCase(), categoryGetter)
+  }
+
+  const results = await schema.find()
+  if (!results) return
+
+  for (const a of results) {
+    // @ts-ignore
+  if (!a.prefix) return
+// @ts-ignore
+    client!.prefixes.set(a._id, a.prefix)
+  }
+
+  for (const a of results) {
+ // @ts-ignore
+  if(!a.disabled_commands) return
+// @ts-ignore
+    client!.disabled.set(a._id, a.disabled_commands)
+  }
+
+
+
 };
-export default handler
+export default handler // eman how to push in maps ?? pls explain

@@ -2,6 +2,7 @@ import { Message, Client, MessageEmbed } from "discord.js"
 let x = "`"
 import { short } from "../../functions/dates/types"
 import { convert as c } from "../../functions/dates/dates"
+import { invite } from "../../objects/config.json"
 
 const embed = new MessageEmbed()
 .setColor('BLUE')
