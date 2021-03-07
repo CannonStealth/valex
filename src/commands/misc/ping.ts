@@ -13,11 +13,13 @@ export default {
     cooldownMessage: 'Wait {TIME} more to execute `{COMMAND}` again',
     callback: async(message: Message, args: string[], lang: any, client: Client) => {
 
+      console.log(client.disabled)
+
       embed.setTitle('Pong \\🏓')
 
       const m = await message.channel.send('Ping?');
 
-      let texta = `${client.user!.tag} **Ping**: ${x}${m.createdTimestamp -
+      let texta = `**${client.user!.tag} Ping**: ${x}${m.createdTimestamp -
         message.createdTimestamp}${x}
         **Api Ping**: ${x}${Math.round(
           client.ws.ping

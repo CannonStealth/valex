@@ -26,7 +26,7 @@ client.prefixes = new Collection();
 client.categories = new Collection();
 client.disabled = new Collection();
 
-let prefix: any = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
+let prefix: any = defaultPrefix
 
 
 client.on("message", async (message: Message) => {
@@ -40,19 +40,30 @@ client.on("message", async (message: Message) => {
 
   prefix = client.prefixes.get(message.guild!.id) ?? prefix ?? null 
 
-  if (!message.content.startsWith(prefix!)) return;
+  if (!message.content.startsWith(prefix!)) {
+    if(message.content.trim() == `<@!${client.user!.id}>`) {
+
+      let guildPrefix = client.prefixes.get(message.guild!.id) ?? null
+      if (guildPrefix == null) guildPrefix = defaultPrefix
+
+      return message.channel.send(`My prefix for ${message.guild!.name} is \`${guildPrefix}\``)
+    } else return
+  }
 
   const args = message.content.slice(prefix!.length).trim().split(/ +/g)
 
   const commandName = args.shift()!;
 
+  const disArr = client.disabled.get(message.guild!.id) ?? null
+  if (disArr != null && disArr[0] && disArr.includes(commandName.toLowerCase())) return
+
   const command = `${prefix}${commandName.toLowerCase()}`;
 
-  const cmd = client.commands.get(commandName) ?? client.commands.get(client.aliases.get(commandName)!) ?? null
+  const cmd = client.commands.get(commandName.toLowerCase()) ?? client.commands.get(client.aliases.get(commandName.toLowerCase())!) ?? null
 
   prefix = client.prefixes.get(message.guild!.id) ?? null
 
-  if(prefix == null) prefix = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
+  if(prefix == null) prefix = defaultPrefix
 
   if (cmd == null) return;
 
@@ -70,7 +81,8 @@ client.on("message", async (message: Message) => {
    permissions = [], 
    permissionError = 'You don\'t have that persmission!', 
    requiredRoles = [], 
-   minArgs, 
+   minArgs,
+   undisabled = false, 
    maxArgs = null, 
    expectedArgs = '', 
    category = 'Misc',
@@ -155,9 +167,7 @@ client.on("message", async (message: Message) => {
 
         } catch (err) { return message.channel.send(cooldownMessage) }
       }
-    } else {
-
-    }
+    } 
 
     callback(message, args, language, client);
 

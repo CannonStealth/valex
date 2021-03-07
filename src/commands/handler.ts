@@ -87,20 +87,11 @@ const handler = async (client: Discord.Client, commandOptions: Record<string, an
   if (!results) return
 
   for (const a of results) {
+    
     // @ts-ignore
-  if (!a.prefix) return
-// @ts-ignore
+  if (!a || !a._id || !a.prefix) return
+  // @ts-ignore
     client!.prefixes.set(a._id, a.prefix)
-  }
-
-  for (const a of results) {
- // @ts-ignore
-  if(!a.disabled_commands) return
-// @ts-ignore
-    client!.disabled.set(a._id, a.disabled_commands)
-  }
-
-
-
+} 
 };
 export default handler // eman how to push in maps ?? pls explain

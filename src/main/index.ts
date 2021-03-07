@@ -1,11 +1,13 @@
 import client, { logger as login } from '../client/client'
 import loadCommands from '../commands/load'
 import loadHandler from "../client/handler"
+import loadData from "../schemas/load-data"
 import { MessageEmbed } from "discord.js"
 import moment from "moment"
 import { emoji } from "../objects/emojis.json"
 import { ColorResolvable } from 'discord.js'
 import mongo from '../functions/db/mongo'
+const a = new Map()
 
 client.on('ready', async () => { 
 
@@ -15,10 +17,9 @@ await mongo().then(async (mongoose) => {
     console.log(`Connected to MongoDB`)
     })
 
-    console.log('LOAD BITCH LOAAAAAAAAAAAAAAAAD')
-
 loadHandler(client)
 loadCommands(client)
+loadData(client)
 
 let time: any = moment(new Date()).format('MMMM Do YYYY, h:mm:ss a')
 

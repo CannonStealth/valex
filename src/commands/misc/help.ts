@@ -1,6 +1,7 @@
 import { Message, Client, Collection, MessageEmbed } from "discord.js"
 import { invite, server } from "../../objects/config.json"
 import { defaultPrefix, betaPrefix } from "../../objects/config.json"
+import { caps } from "../../functions/utils"
 const x = "`"
 
 const blockedEmbed = new MessageEmbed()
@@ -12,11 +13,12 @@ export default {
     description: 'Shows all commands or a specific command information',
     usage: '[command | category]',
     hidden2: true,
+    disabled: true,
     cooldown: '3s',
     callback: async(msg: Message, args: string[], lang: any, client: Client) => { 
 
     let prefix = client.prefixes.get(msg.guild!.id) ?? null
-    if(prefix == null) prefix = client.user!.id == '809393759204409364' ? defaultPrefix : betaPrefix
+    if(prefix == null) prefix =  defaultPrefix
 
     const allEmbed: MessageEmbed = new MessageEmbed()
     .setColor('GREEN')
@@ -38,14 +40,13 @@ export default {
         .setTitle(`${cmd.name} Command Info`)
         .setColor(cmd.colour || 'GREEN')
 
-        if(cmd.description) infoEmbed.addField('Description', x + cmd.description + x, false)
+        if (cmd.description) infoEmbed.addField('Description', x + cmd.description + x, false)
+        if (cmd.usage) infoEmbed.addField('Usage', x + prefix + cmd.name + ' ' + cmd.usage + x, false)
+        else infoEmbed.addField('Usage', x + prefix + cmd.name + x, false)
+        if (cmd.example) infoEmbed.addField('Example', x + prefix + cmd.name + ' ' + cmd.example + x, false)
+        else infoEmbed.addField('Example', x + prefix + cmd.name + x, false)
 
-        infoEmbed.addField('Usage', x + cmd.description + x, false)
-        .addFields( 
-            {name: 'Usage', value: x + prefix + cmd.name + ' ' + (cmd.usage || '') + x, inline: false},
-            {name: 'Example', value: x + prefix + cmd.name + ' ' + (cmd.example || '') + x, inline: false},
-            )
-            .setFooter(`Requested by ${msg.member!.displayName || msg.author.username}`, msg.author.displayAvatarURL())
+        infoEmbed.setFooter(`Requested by ${msg.member!.displayName || msg.author.username}`, msg.author.displayAvatarURL())
 
             if(cmd.aliases || typeof cmd.aliases != 'undefined') infoEmbed.addField('Aliases', x + '❯ ' + cmd.aliases.join(',\n❯ ') + x, false)
             if(cmd.cooldown && cmd.cooldown != '0s') infoEmbed.addField('Cooldown', x + (cmd.cooldown || '0s') + x, false)
@@ -68,6 +69,9 @@ client.categories.forEach(category => {
     if(command.locked) return
     if(command.hidden) return
     if(command.hidden2) return
+    if(client.disabled.get(msg.guild!.id)) {
+    if(client.disabled.get(msg.guild!.id).includes(command.name)) return
+  }
     desc.push(cmd)
     total++
   })
@@ -76,7 +80,7 @@ client.categories.forEach(category => {
   console.log(desc)
 
   // @ts-ignore
- allEmbed.addField('**' + category[0].replace(/_/g, ' ').replace(/\b[a-zA-Z]/g, m => m.toUpperCase()) + '**', '`' + desc.join('`, `') + '`')
+ allEmbed.addField('**' + caps(category[0]) + '**', '`' + desc.join('`, `') + '`')
   
 })
 
@@ -110,7 +114,9 @@ function category() {
     if(command.locked) return
     if(command.hidden) return 
     if(command.hidden2) return 
-
+    if(client.disabled.get(msg.guild!.id)) {
+      if(client.disabled.get(msg.guild!.id).includes(command.name)) return
+    }
     let description;
 
     if (command.description) description = ' - ' + '`' + command.description + '`'
@@ -124,7 +130,7 @@ function category() {
   categoryEmbed
   .setDescription(desc)
    // @ts-ignore
-  .setAuthor(`${msg.guild} ${category[0].replace(/_/g, ' ').replace(/\b[a-zA-Z]/g, m => m.toUpperCase())} Avaible Commands (${total})`, msg.guild!.iconURL()!)
+  .setAuthor(`${msg.guild} ${caps(category[0])} Avaible Commands (${total})`, msg.guild!.iconURL()!)
   // @ts-ignore
   
   return msg.channel.send(categoryEmbed)
